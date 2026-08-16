@@ -1,0 +1,31 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.header {
+  background-color: $primary-color;
+  color: $white;
+  padding: $spacing-md 0;
+
+  &__container {
+    @include container;
+    @include flex-between;
+  }
+
+  &__logo {
+    img {
+      height: 32px;
+    }
+  }
+
+  &__login {
+    &-link {
+      color: $white;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+@use '../../../../styles/variables' as vars;
+@use '../../../../styles/mixins' as mix;
+
+.footer {
+  background-color: vars.$primary-color;
+  color: vars.$white;
+  padding: vars.$spacing-lg 0;
+
+  &__container {
+    @include mix.container;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: vars.$breakpoint-md) {
+      flex-direction: column;
+      gap: vars.$spacing-lg;
+      text-align: center;
+    }
+  }
+
+  &__logo {
+    img {
+      height: 32px;
+    }
+  }
+
+  &__credits {
+    font-size: vars.$font-size-small;
+    opacity: 0.8;
+  }
+
+  &__social {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    @media (max-width: vars.$breakpoint-md) {
+      align-items: center;
+    }
+
+    p {
+      margin-bottom: vars.$spacing-sm;
+    }
+
+    &-icons {
+      display: flex;
+      gap: vars.$spacing-md;
+    }
+
+    &-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 32px;
+        height: 32px;
+        transition: opacity 0.2s ease;
+      }
+
+      &:hover {
+        img {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}

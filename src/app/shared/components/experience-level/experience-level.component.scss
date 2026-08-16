@@ -1,0 +1,44 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.experience-levels {
+  display: flex;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+  margin: $spacing-lg 0;
+
+  @media (max-width: $breakpoint-md) {
+    flex-direction: column;
+  }
+}
+
+.experience-level {
+  flex: 1;
+  min-width: 120px;
+  border: 1px solid $gray-medium;
+  border-radius: $border-radius-md;
+  padding: $spacing-md;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $primary-color;
+  }
+
+  &--selected {
+    border-color: $primary-color;
+    background-color: rgba($primary-color, 0.05);
+  }
+
+  &__title {
+    margin: 0 0 $spacing-xs 0;
+    font-size: $font-size-base;
+    font-weight: 500;
+  }
+
+  &__description {
+    margin: 0;
+    font-size: $font-size-small;
+    color: $gray-dark;
+  }
+}

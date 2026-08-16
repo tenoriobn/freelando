@@ -1,0 +1,45 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.button {
+  @include button-base;
+
+  &__text {
+    white-space: nowrap;
+  }
+
+  &__icon {
+    &--left {
+      margin-right: $spacing-xs;
+    }
+
+    &--right {
+      margin-left: $spacing-xs;
+    }
+  }
+
+  &--primary {
+    background-color: $red;
+    color: $white;
+  }
+
+  &--secondary {
+    background-color: $primary-color;
+    color: $white;
+  }
+
+  &--outline {
+    background-color: transparent;
+    border: 1px solid $primary-color;
+    color: $primary-color;
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}

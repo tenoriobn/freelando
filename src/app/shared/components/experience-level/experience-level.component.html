@@ -1,0 +1,10 @@
+<div class="experience-levels">
+  <div
+    *ngFor="let level of levels"
+    class="experience-level"
+    [class.experience-level--selected]="selectedLevel === level.id"
+    (click)="selectLevel(level.id)">
+    <h4 class="experience-level__title">{{ level.label }}</h4>
+    <p class="experience-level__description">{{ level.description }}</p>
+  </div>
+</div>

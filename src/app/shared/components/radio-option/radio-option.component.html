@@ -1,0 +1,11 @@
+<div class="radio-option">
+  <input
+    type="radio"
+    class="radio-option__input"
+    [id]="id"
+    [name]="name"
+    [value]="value"
+    [checked]="checked"
+    (change)="onChange()">
+  <label [for]="id" class="radio-option__label">{{ label }}</label>
+</div>

@@ -1,0 +1,44 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-md;
+
+  &__input {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $gray-medium;
+    border-radius: 50%;
+    margin-right: $spacing-md;
+    position: relative;
+    cursor: pointer;
+
+    &:checked {
+      border-color: $primary-color;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        background-color: $primary-color;
+        border-radius: 50%;
+      }
+    }
+
+    &:focus {
+      outline: 2px solid rgba($primary-color, 0.3);
+      outline-offset: 2px;
+    }
+  }
+
+  &__label {
+    cursor: pointer;
+  }
+}
