@@ -4,11 +4,187 @@
       <h2 class="cadastro-form__title">Crie seu cadastro</h2>
 
       <p class="cadastro-form__description">
-        Crie seu perfil gratuitamente para começar a trabalhar com os melhores freelancers.
-        Em seguida, você poderá dar mais detalhes sobre suas demandas e sobre sua forma de trabalho.
+        Crie seu perfil gratuitamente para começar a trabalhar com os melhores
+        freelancers. Em seguida, você poderá dar mais detalhes sobre suas
+        demandas e sobre sua forma de trabalho.
       </p>
 
       <form [formGroup]="dadosPessoaisForm" (ngSubmit)="onProximo()">
+        <div class="cadastro-form__field">
+          <label for="nomeCompleto" class="cadastro-form__label"
+            >Nome Completo</label
+          >
+          <input
+            id="nomeCompleto"
+            type="text"
+            class="cadastro-form__input"
+            formControlName="nomeCompleto"
+          />
+
+          <div
+            *ngIf="
+              dadosPessoaisForm.get('nomeCompleto')?.invalid &&
+              dadosPessoaisForm.get('nomeCompleto')?.touched
+            "
+            class="cadastro-form__error"
+          >
+            Nome completo é orbigatório
+          </div>
+        </div>
+
+        <div class="cadastro-form__row">
+          <div class="cadastro-form__field cadastro-form__field--half">
+            <label for="estado" class="cadastro-form__label">Estado</label>
+            <select
+              id="estado"
+              formControlName="estado"
+              class="cadastro-form__select"
+            >
+              <option value="" disabled selected>Selecione seu estado</option>
+              <ng-container *ngIf="estado$ | async as estados">
+                <option
+                  *ngFor="let estado of estados"
+                  value="{{ estado.sigla }}"
+                >
+                  {{ estado.nome }}
+                </option>
+              </ng-container>
+            </select>
+
+            <div
+              *ngIf="
+                dadosPessoaisForm.get('estado')?.invalid &&
+                dadosPessoaisForm.get('estado')?.touched
+              "
+              class="cadastro-form__error"
+            >
+              Estado é obrigatório
+            </div>
+          </div>
+
+          <div class="cadastro-form__field cadastro-form__field--half">
+            <label for="cidade" class="cadastro-form__label">Cidade</label>
+
+            <select
+              id="cidade"
+              class="cadastro-form__select"
+              formControlName="cidade"
+              [disabled]="
+                (carregandoCidades$ | async) ||
+                !dadosPessoaisForm.get('estado')?.value
+              "
+            >
+              <option value="" disabled selected>
+                {{
+                  (carregandoCidades$ | async) ? "Carregando..." : "Selecione"
+                }}
+              </option>
+              <ng-container *ngIf="cidades$ | async as cidades">
+                <option *ngFor="let cidade of cidades" [value]="cidade.nome">
+                  {{ cidade.nome }}
+                </option>
+              </ng-container>
+            </select>
+
+            <div
+              *ngIf="
+                dadosPessoaisForm.get('cidade')?.invalid &&
+                dadosPessoaisForm.get('cidade')?.touched
+              "
+              class="cadastro-form__error"
+            >
+              Cidade é obrigatória
+            </div>
+          </div>
+        </div>
+
+        <div class="cadastro-form__field">
+          <label for="email" class="cadastro-form__label">Email</label>
+
+          <input
+            id="email"
+            type="text"
+            class="cadastro-form__input"
+            formControlName="email"
+          />
+
+          <div
+            *ngIf="
+              dadosPessoaisForm.get('email')?.invalid &&
+              dadosPessoaisForm.get('email')?.touched
+            "
+            class="cadastro-form__error"
+          >
+            <span *ngIf="dadosPessoaisForm.get('email')?.errors?.['required']"
+              >Email é obrigatório</span
+            >
+            <span *ngIf="dadosPessoaisForm.get('email')?.errors?.['email']"
+              >Email inválido</span
+            >
+          </div>
+        </div>
+
+        <div class="cadastro-form__row">
+          <div class="cadastro-form__field cadastro-form__field--half">
+            <label for="senha" class="cadastro-form__label">Senha</label>
+            <input
+              id="senha"
+              type="password"
+              class="cadastro-form__input"
+              formControlName="senha"
+            />
+            <div
+              *ngIf="
+                dadosPessoaisForm.get('senha')?.invalid &&
+                dadosPessoaisForm.get('senha')?.touched
+              "
+              class="cadastro-form__error"
+            >
+              <span *ngIf="dadosPessoaisForm.get('senha')?.errors?.['required']"
+                >Senha é obrigatória</span
+              >
+              <span
+                *ngIf="dadosPessoaisForm.get('senha')?.errors?.['minlength']"
+                >Senha deve ter pelo menos 6 caracteres</span
+              >
+            </div>
+          </div>
+
+          <div class="cadastro-form__field cadastro-form__field--half">
+            <label for="confirmaSenha" class="cadastro-form__label"
+              >Repita a senha</label
+            >
+            <input
+              id="confirmaSenha"
+              type="password"
+              class="cadastro-form__input"
+              formControlName="confirmaSenha"
+            />
+            <div
+              *ngIf="
+                dadosPessoaisForm.get('confirmaSenha')?.invalid &&
+                dadosPessoaisForm.get('confirmaSenha')?.touched
+              "
+              class="cadastro-form__error"
+            >
+              <span
+                *ngIf="
+                  dadosPessoaisForm.get('confirmaSenha')?.errors?.['required']
+                "
+                >Confirmação de senha é obrigatória</span
+              >
+            </div>
+            <div
+              *ngIf="
+                dadosPessoaisForm.errors?.['senhasNaoIguais'] &&
+                dadosPessoaisForm.get('confirmaSenha')?.touched
+              "
+              class="cadastro-form__error"
+            >
+              As senhas não coincidem
+            </div>
+          </div>
+        </div>
 
         <div class="cadastro-form__actions">
           <app-button
@@ -16,7 +192,8 @@
             type="outline"
             icon="fas fa-arrow-left"
             iconPosition="left"
-            (clicked)="onAnterior()">
+            (clicked)="onAnterior()"
+          >
           </app-button>
 
           <app-button
@@ -25,7 +202,8 @@
             icon="fas fa-arrow-right"
             iconPosition="right"
             [disabled]="dadosPessoaisForm.invalid"
-            (clicked)="onProximo()">
+            (clicked)="onProximo()"
+          >
           </app-button>
         </div>
       </form>
