@@ -2,9 +2,144 @@
   <div class="cadastro-form__container">
     <div class="cadastro-form__card">
       <h2 class="cadastro-form__title">Crie seu cadastro</h2>
-      <p class="cadastro-form__subtitle">Melhore sua descrição para atrair clientes!</p>
+      <p class="cadastro-form__subtitle">
+        Melhore sua descrição para atrair clientes!
+      </p>
 
       <form [formGroup]="perfilForm" (ngSubmit)="onProximo()">
+        <div class="cadastro-form__field">
+          <label for="" class="cadastro-form__label">Sua foto</label>
+
+          <div class="cadastro-form__upload-container">
+            <div
+              class="cadastro-form__upload-area"
+              [class.cadastro-form__upload-area--with-preview]="fotoPreview"
+              (click)="fileInput.click()"
+            >
+              <ng-container *ngIf="!fotoPreview">
+                <div>
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <p>
+                    Arraste arquivos para esta área ou clique para fazer o
+                    upload
+                  </p>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="fotoPreview">
+                <img
+                  [src]="fotoPreview"
+                  alt="Preview da foto"
+                  class="cadastro-form__foto-preview"
+                />
+              </ng-container>
+            </div>
+            <input
+              #fileInput
+              type="file"
+              accept="image/*"
+              style="display: none"
+              (change)="onFotoSelecionada($event)"
+            />
+          </div>
+        </div>
+
+        <div class="cadastro-form__field">
+          <label class="cadastro-form__label"
+            >Cite até 3 habilidades que você considera principais</label
+          >
+
+          <div class="cadastro-form__chips">
+            <app-chip
+              *ngFor="let habilidade of habilidades"
+              [text]="habilidade.nome"
+              [selected]="habilidade.selecionada"
+              [disabled]="
+                !habilidade.selecionada &&
+                perfilForm.get('habilidadesSelecionadas')?.value.length >= 3
+              "
+              (clicked)="toggleHabilidade(habilidade)"
+            >
+            </app-chip>
+          </div>
+        </div>
+
+        <div class="cadastro-form__field">
+          <div class="cadastro-form__row cadastro-form__row--header">
+            <div class="cadastro-form__column">
+              <label class="cadastro-form__label">Idiomas</label>
+            </div>
+            <div class="cadastro-form__column">
+              <label class="cadastro-form__label">Nível</label>
+            </div>
+          </div>
+
+          <ng-container formArrayName="idiomas">
+            <div
+              class="cadastro-form__row"
+              *ngFor="let idiomaForm of idiomasArray.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <div class="cadastro-form__column">
+                <select class="cadastro-form__select" formControlName="nome">
+                  <option value="" disabled>Escolha o idioma</option>
+                  <option *ngFor="let idioma of idiomas" [value]="idioma">
+                    {{ idioma }}
+                  </option>
+                </select>
+
+                <div
+                  *ngIf="
+                    idiomaForm.get('nome')?.invalid &&
+                    idiomaForm.get('nome')?.touched
+                  "
+                  class="cadastro-form__error"
+                >
+                  Idioma é obrigatório
+                </div>
+              </div>
+
+              <div class="cadastro-form__column">
+                <select class="cadastro-form__select" formControlName="nivel">
+                  <option value="" disabled>Nível de conhecimento</option>
+                  <option *ngFor="let nivel of niveisIdioma" [value]="nivel">
+                    {{ nivel }}
+                  </option>
+                </select>
+
+                <div
+                  *ngIf="
+                    idiomaForm.get('nivel')?.invalid &&
+                    idiomaForm.get('nivel')?.touched
+                  "
+                  class="cadastro-form__error"
+                >
+                  Nível é obrigatório
+                </div>
+              </div>
+
+              <div class="cadastro-form__column cadastro-form__column--actions">
+                <button
+                  type="button"
+                  class="cadastro-form__icon-button"
+                  (click)="removerIdioma(i)"
+                  *ngIf="i > 0 || idiomaForm.get('nome')?.value !== 'Português'"
+                >
+                  <p>Remove</p>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="cadastro-form__add-button">
+            <button
+              type="button"
+              class="cadastro-form__text-button"
+              (click)="adicionarIdioma()"
+            >
+              <i class="fas fa-plus-circle"></i> Adicionar idiomas
+            </button>
+          </div>
+        </div>
 
         <div class="cadastro-form__actions">
           <app-button
@@ -12,7 +147,8 @@
             type="outline"
             icon="fas fa-arrow-left"
             iconPosition="left"
-            (clicked)="onAnterior()">
+            (clicked)="onAnterior()"
+          >
           </app-button>
 
           <app-button
@@ -21,7 +157,8 @@
             icon="fas fa-arrow-right"
             iconPosition="right"
             [disabled]="perfilForm.invalid"
-            (clicked)="onProximo()">
+            (clicked)="onProximo()"
+          >
           </app-button>
         </div>
       </form>
