@@ -27,6 +27,8 @@ import {
   IbgeService,
 } from '../../shared/services/ibge.service';
 import { cpfValidator } from '../../shared/validators/cpf.validator';
+import { emailExistenteValidator } from '../../shared/validators/emailExistente.validator';
+import { EmailValidatorService } from '../../shared/services/email-validator.service';
 
 export const senhasIguaisValidator: ValidatorFn = (
   control: AbstractControl,
@@ -59,6 +61,7 @@ export class DadosPessoaisFormComponent implements OnInit {
     private router: Router,
     private cadastroService: CadastroService,
     private ibgeService: IbgeService,
+    private emailService: EmailValidatorService,
   ) {}
 
   ngOnInit(): void {
@@ -72,7 +75,11 @@ export class DadosPessoaisFormComponent implements OnInit {
         cpf: ['', [Validators.required, cpfValidator]],
         estado: ['', Validators.required],
         cidade: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        email: [
+          '',
+          [Validators.required, Validators.email],
+          [emailExistenteValidator(this.emailService)],
+        ],
         senha: ['', [Validators.required, Validators.minLength(6)]],
         confirmaSenha: ['', Validators.required],
       },
